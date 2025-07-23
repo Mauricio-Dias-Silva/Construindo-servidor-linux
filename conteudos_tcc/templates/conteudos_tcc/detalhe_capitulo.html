@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ capitulo.titulo }} - Guia Servidor TCC{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home_page' %}">Início</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Capítulo {{ capitulo.ordem }}: {{ capitulo.titulo }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4 text-primary">Capítulo {{ capitulo.ordem }}: {{ capitulo.titulo }}</h1>
+    {% if capitulo.resumo %}
+        <p class="lead mb-4">{{ capitulo.resumo|safe }}</p>
+    {% endif %}
+
+    <hr class="my-4">
+
+    {% if secoes %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Sumário do Capítulo:</h3>
+            </div>
+            <div class="card-body toc-list">
+                <ul>
+                    {% for secao in secoes %}
+                        <li><a href="#secao-{{ secao.slug }}">{{ capitulo.ordem }}.{{ secao.ordem }}. {{ secao.titulo }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {% for secao in secoes %}
+            <section class="mb-5">
+                <h2 id="secao-{{ secao.slug }}" class="mb-3 text-secondary">{{ capitulo.ordem }}.{{ secao.ordem }}. {{ secao.titulo }}</h2>
+                <div class="section-content">
+                    {# Verifica se a seção tem uma imagem ilustrativa #}
+                    {% if secao.imagem_ilustrativa %}
+                        <div class="text-center mb-4">
+                            <img src="{{ secao.imagem_ilustrativa.url }}" alt="{{ secao.titulo }}" class="img-fluid rounded shadow-sm">
+                        </div>
+                    {% endif %}
+
+                    {# O conteúdo HTML principal da seção #}
+                    {{ secao.conteudo_html|safe }}
+                </div>
+            </section>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info alert-custom text-center" role="alert">
+            <p class="mb-0">Nenhuma seção disponível para este capítulo ainda. Por favor, adicione seções através do <a href="/admin/" class="alert-link">painel de administração</a>.</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,54 @@
+# docker-compose.yml
+version: '3.8' # Versão da especificação do Docker Compose
+
+services:
+  # Serviço para a aplicação Django
+  web:
+    build: . # Constrói a imagem Docker a partir do Dockerfile no diretório atual
+    command: gunicorn --bind 0.0.0.0:8000 guia_servidor_web.wsgi:application # Comando para iniciar o Gunicorn
+    volumes:
+      - .:/app # Monta o diretório atual do seu projeto no contêiner para desenvolvimento
+      # Volumes para persistir arquivos estáticos e de mídia em produção (usaremos Nginx para servir)
+      - static_volume:/app/guia_servidor_web/staticfiles
+      - media_volume:/app/guia_servidor_web/mediafiles
+    expose: # Expõe a porta 8000 para outros contêineres na rede Docker
+      - 8000
+    env_file: # Carrega variáveis de ambiente de um arquivo .env (ótimo para segredos e configurações de BD)
+      - .env
+    depends_on: # Garante que o banco de dados inicie antes da aplicação web
+      - db
+
+  # Serviço para o banco de dados (MySQL/MariaDB)
+  # Usaremos este contêiner de DB se você não quiser usar o MySQL/MariaDB do Virtualmin para o Django.
+  # Se você usar o DB do Virtualmin, pode REMOVER este serviço 'db' e ajustar 'web' para conectar no IP do host.
+  db:
+    image: mysql:8.0 # Ou postgres:14 para PostgreSQL
+    environment: # Variáveis de ambiente para configurar o banco de dados
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # Variáveis carregadas do .env
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql # Volume para persistir os dados do banco de dados (para que não se percam ao reiniciar o contêiner)
+    ports:
+      - "3306:3306" # Mapeia a porta do MySQL do contêiner para a porta do host (opcional, mas útil para acesso externo ao DB)
+
+  # Serviço para o Nginx (servidor web e proxy reverso)
+  nginx:
+    image: nginx:latest # Imagem oficial do Nginx
+    ports: # Mapeia as portas do host para as portas do contêiner (para acesso externo)
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+    volumes: # Monta volumes para o arquivo de configuração do Nginx e para os arquivos estáticos/de mídia
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro # Monta sua config Nginx personalizada (somente leitura)
+      - static_volume:/app/guia_servidor_web/staticfiles # Acessa arquivos estáticos do contêiner web
+      - media_volume:/app/guia_servidor_web/mediafiles # Acessa arquivos de mídia do contêiner web
+    depends_on: # Garante que a aplicação web inicie antes do Nginx
+      - web
+
+# Definição dos volumes persistentes
+# Eles armazenam dados de forma persistente, mesmo que os contêineres sejam removidos.
+volumes:
+  static_volume: # Para arquivos estáticos do Django
+  media_volume:  # Para arquivos de mídia (uploads) do Django
+  db_data:       # Para dados do banco de dados MySQL/MariaDB

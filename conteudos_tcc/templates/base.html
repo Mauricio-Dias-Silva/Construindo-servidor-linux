@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Guia Servidor TCC{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* Estilos CSS personalizados (para ajustes e sobreposições) */
+        /* IMPORTANTE: Estes estilos DEVEM vir DEPOIS dos links do Bootstrap */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo mais moderna */
+            color: #343a40;
+            line-height: 1.6;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .header-bg {
+            background: linear-gradient(to right, #0056b3, #007bff); /* Gradiente azul */
+            color: white;
+            padding: 2.5rem 0;
+            margin-bottom: 2rem;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .chapter-card {
+            margin-bottom: 1.5rem;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease-in-out;
+        }
+        .chapter-card:hover {
+            transform: translateY(-5px);
+        }
+        .chapter-card .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: bold;
+            color: #495057;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .chapter-card .card-body h3 {
+            color: #007bff;
+        }
+        .section-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #282c34; /* Fundo escuro para código */
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', monospace; /* Fontes de código modernas */
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.85em;
+            text-align: center;
+        }
+        .toc-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc-list ul li a {
+            text-decoration: none;
+            color: #007bff;
+            padding: 5px 0;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        .toc-list ul li a:hover {
+            background-color: #e9ecef;
+        }
+        .alert-custom {
+            margin-top: 1.5rem;
+        }
+        /* Estilos para o corpo da seção, para garantir que o HTML inserido via |safe seja renderizado bem */
+        .section-content p, .section-content ul, .section-content ol, .section-content h1, .section-content h2, .section-content h3, .section-content h4, .section-content h5, .section-content h6 {
+            margin-bottom: 1em;
+        }
+        .section-content ul, .section-content ol {
+            padding-left: 20px;
+        }
+        .section-content pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        .section-content code {
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+            background-color: #3b404a; /* Cor de fundo para código inline */
+            color: #abb2bf;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        /* --- Novos Estilos para a Seção de Destaques (home.html) --- */
+        .feature-box {
+            background-color: #e9f5ff; /* Fundo azul claro para destaque */
+            border: 1px solid #cce5ff; /* Borda sutil */
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background-color: #d1ecf1; /* Fundo um pouco mais escuro no hover */
+        }
+        .feature-box i {
+            margin-bottom: 0.5rem; /* Espaço abaixo dos ícones */
+        }
+        .feature-box h3 {
+            font-weight: bold;
+            color: #0056b3; /* Cor mais escura para títulos de feature */
+            margin-bottom: 0.8rem;
+        }
+        .feature-box p {
+            font-size: 0.95em;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <div class="container text-center">
+            <h1>Guia Completo: Construindo um Provedor de Sites do Zero para TCC</h1>
+            <p class="lead">Uma jornada prática pela Engenharia da Computação aplicada à infraestrutura.</p>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home_page' %}">Guia TCC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home_page' %}">Início</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Capítulos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if todos_capitulos %}
+                                {% for cap in todos_capitulos %}
+                                    <li><a class="dropdown-item" href="{% url 'detalhe_capitulo' cap.slug %}">Capítulo {{ cap.ordem }}: {{ cap.titulo }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a class="dropdown-item" href="#">Nenhum capítulo</a></li>
+                            {% endif %}
+                        </ul>
+                        <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home_page' %}">Início</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Capítulos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if todos_capitulos %}
+                                {% for cap in todos_capitulos %}
+                                    <li><a class="dropdown-item" href="{% url 'detalhe_capitulo' cap.slug %}">Capítulo {{ cap.ordem }}: {{ cap.titulo }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a class="dropdown-item" href="#">Nenhum capítulo</a></li>
+                            {% endif %}
+                        </ul>
+                            </li>
+                            {# ADICIONE ESTE NOVO ITEM AQUI #}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'recursos_page' %}">Recursos</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {% now "Y" %} Seu Nome. Projeto de TCC em Engenharia da Computação. Todos os direitos reservados.</p>
+            <p class="mt-2"><a href="#" class="text-info">Política de Privacidade</a> | <a href="#" class="text-info">Termos de Uso</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

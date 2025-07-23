@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - Guia Servidor TCC{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-white rounded shadow-sm mb-5">
+        <div class="container">
+            <h2 class="text-center mb-5 text-primary">Bem-vindo ao Guia de Servidor Web para TCC!</h2>
+            <p class="lead text-center mb-5">Desvende o universo da infraestrutura de servidores e desenvolvimento web com este guia prático e completo, feito para futuros engenheiros de computação.</p>
+
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-cpu-fill display-4 text-info mb-3"></i>
+                        <h3 class="h5">Infraestrutura Linux</h3>
+                        <p>Domine a instalação e configuração de sistemas operacionais Linux otimizados para servidores.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-shield-lock-fill display-4 text-danger mb-3"></i>
+                        <h3 class="h5">Segurança Robusta</h3>
+                        <p>Aprenda a proteger seu servidor com firewalls, SSH hardening e certificados SSL.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-speedometer2 display-4 text-success mb-3"></i>
+                        <h3 class="h5">Otimização de Desempenho</h3>
+                        <p>Faça seu hardware limitado performar como um profissional com técnicas avançadas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-code-slash display-4 text-warning mb-3"></i>
+                        <h3 class="h5">Implantação Django</h3>
+                        <p>Publique suas aplicações web Django com Gunicorn e Nginx, do desenvolvimento ao deploy.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-robot display-4 text-secondary mb-3"></i>
+                        <h3 class="h5">Automação e DevOps</h3>
+                        <p>Descubra como scripts e contêineres podem transformar a gestão da sua infraestrutura.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box p-4 rounded-3 h-100">
+                        <i class="bi bi-lightbulb-fill display-4 text-info mb-3"></i>
+                        <h3 class="h5">Análise para o TCC</h3>
+                        <p>Guia completo para analisar resultados, desafios e estruturar seu trabalho acadêmico.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="carouselExampleCaptions" class="carousel slide mb-5 rounded shadow" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner rounded">
+            <div class="carousel-item active">
+                <img src="/static/img/carousel_servidor.jpg" class="d-block w-100" alt="Servidor de Hospedagem">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-3 rounded">
+                    <h5>Construa Seu Próprio Servidor!</h5>
+                    <p>Aprenda cada passo da infraestrutura web com nosso guia completo.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/img/carousel_seguranca.jpg" class="d-block w-100" alt="Segurança Cibernética">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-3 rounded">
+                    <h5>Segurança Nunca é Demais!</h5>
+                    <p>Implemente as melhores práticas de hardening e firewall para seu sistema.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/img/carousel_otimizacao.jpg" class="d-block w-100" alt="Otimização de Desempenho">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-3 rounded">
+                    <h5>Otimize Seu Desempenho!</h5>
+                    <p>Faça seu servidor antigo voar com nossas dicas de otimização.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <h3 class="mb-4">Capítulos do Guia:</h3>
+    <div class="row">
+        {% for capitulo in capitulos %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card chapter-card h-100">
+                    <div class="card-header">
+                        Capítulo {{ capitulo.ordem }}
+                    </div>
+                    <div class="card-body text-center">
+                        {% if capitulo.imagem_capa %}
+                            <img src="{{ capitulo.imagem_capa.url }}" alt="Capa do Capítulo {{ capitulo.ordem }}" class="img-fluid rounded mb-3" style="max-height: 150px; object-fit: cover;">
+                        {% else %}
+                            {# Placeholder se não houver imagem de capa #}
+                            <img src="/static/img/placeholder_capitulo.png" alt="Capítulo sem capa" class="img-fluid rounded mb-3" style="max-height: 150px; object-fit: cover;">
+                        {% endif %}
+                        <h4 class="card-title text-primary">{{ capitulo.titulo }}</h4>
+                        {% if capitulo.resumo %}<p class="card-text">{{ capitulo.resumo|safe|truncatewords:25 }}</p>{% endif %}
+                        <a href="{% url 'detalhe_capitulo' capitulo.slug %}" class="btn btn-primary mt-3">Continuar Lendo</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="alert alert-warning alert-custom text-center" role="alert">
+        <strong>Nota:</strong> Para começar a adicionar conteúdo, acesse o <a href="/admin/" class="alert-link">painel de administração do Django</a> e crie seus capítulos e seções.
+    </div>
+
+{% endblock %}
